@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-data-grid";
 import type { Training } from "../types";
 import dayjs from "dayjs";
+import { Button } from "@mui/material";
 
 function TrainingList() {
     const [trainings, setTrainings] = useState<Training[]>([]);
@@ -28,6 +29,19 @@ function TrainingList() {
 
                 return '';
             }
+        },
+        {
+            field: "id",
+            headerName: "Actions",
+            sortable: false,
+            filterable: false,
+            renderCell: (params: GridRenderCellParams) =>
+                <Button
+                    color="error"
+                    size="small"
+                    onClick={() => handleDelete(params.id as string)}>
+                    Delete
+                </Button>
         }
     ]
 
@@ -42,6 +56,21 @@ function TrainingList() {
             .catch(err => console.error(err))
     }
 
+    const handleDelete = (id: number | string) => {
+        if(window.confirm("Are you sure?")){
+            fetch(import.meta.env.VITE_API_URL + "/trainings/" + id, {
+                method: "DELETE"
+            })
+            .then(response => {
+                if(!response.ok)
+                    throw new Error("Error when deleting a training");
+                return response.json()
+            })
+            .then(() => getTrainings())
+            .catch(err => console.error(err));
+        }
+    }
+
     useEffect(() => {
         getTrainings();
     }, [])
@@ -52,7 +81,7 @@ function TrainingList() {
                 <DataGrid
                     rows={trainings}
                     columns={columns}
-                    //getRowId={row => row._links.training.href}
+                    getRowId={row => row.id}
                     autoPageSize
                     rowSelection={false}
                     showToolbar

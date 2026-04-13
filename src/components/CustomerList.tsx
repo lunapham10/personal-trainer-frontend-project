@@ -1,10 +1,13 @@
 import type { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
-import { DataGrid} from "@mui/x-data-grid";
-import type { Customer, NewCustomer } from "../types";
+import { DataGrid } from "@mui/x-data-grid";
+import type { Customer, NewCustomer, NewTraining } from "../types";
 import AddCustomer from "../components/AddCustomer"
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import EditCustomer from "./EditCustomer";
+import AddTraining from "./AddTraining";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Grid from '@mui/material/Grid';
 
 function CustomerList() {
     const [customers, setCustomers] = useState<Customer[]>([]);
@@ -12,16 +15,26 @@ function CustomerList() {
     const columns: GridColDef[] = [
         { field: "firstname", headerName: "First Name", width: 100 },
         { field: "lastname", headerName: "Last Names", width: 100 },
-        { field: "streetaddress", headerName: "Address", width: 170 },
+        { field: "streetaddress", headerName: "Address", width: 150 },
         { field: "postcode", headerName: "Postcode", width: 100 },
         { field: "city", headerName: "City", width: 100 },
-        { field: "email", headerName: "Email", width: 200 },
+        { field: "email", headerName: "Email", width: 150 },
         { field: "phone", headerName: "Phone Number", width: 100 },
+        {
+            field: "addTraining",
+            headerName: "",
+            sortable: false,
+            filterable: false,
+            width: 150,
+            renderCell: (params: GridRenderCellParams) =>
+                <AddTraining customerUrl={params.row._links.self.href} handleAddTraining={handleAddTraining} />
+        },
         {
             field: "_links.customer.href",
             headerName: "",
             sortable: false,
             filterable: false,
+            width: 50,
             renderCell: (params: GridRenderCellParams) =>
                 <EditCustomer url={params.id as string} customer={params.row} handleUpdate={handleUpdate} />
         },
@@ -30,13 +43,12 @@ function CustomerList() {
             headerName: "",
             sortable: false,
             filterable: false,
+            width: 50,
             renderCell: (params: GridRenderCellParams) =>
-                <Button
-                    color="error"
-                    size="small"
+                <Grid
                     onClick={() => handleDelete(params.id as string)}>
-                    Delete
-                </Button>
+                    <DeleteIcon />
+                </Grid>
         }
 
     ]
@@ -103,28 +115,45 @@ function CustomerList() {
             .catch(err => console.error(err))
     }
 
-    useEffect(() => {
-        getCustomers();
-    }, []);
+    const handleAddTraining = (training: NewTraining) => {
+        fetch(import.meta.env.VITE_API_URL + "/trainings", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(training)
+        })
+            .then(response => {
+                if (!response.ok)
+                    throw new Error("Error when adding training");
+                alert("Training added successfully!");
+            })
+            .catch(err => console.error(err));
+    }
 
 
-    return (
-        <>
-            <Stack direction="row" sx={{ mt: 2, mb: 2 }}>
-                <AddCustomer handleAdd={handleAdd} />
-            </Stack>
-            <div style={{ width: "100%", height: 500 }}>
-                <DataGrid
-                    rows={customers}
-                    columns={columns}
-                    getRowId={row => row._links.self.href}
-                    autoPageSize
-                    rowSelection={false}
-                    showToolbar
-                />
-            </div>
-        </>
-    );
+useEffect(() => {
+    getCustomers();
+}, []);
+
+
+return (
+    <>
+        <Stack direction="row" sx={{ mt: 2, mb: 2 }}>
+            <AddCustomer handleAdd={handleAdd} />
+        </Stack>
+        <div style={{ width: "100%", height: 500 }}>
+            <DataGrid
+                rows={customers}
+                columns={columns}
+                getRowId={row => row._links.self.href}
+                autoPageSize
+                rowSelection={false}
+                showToolbar
+            />
+        </div>
+    </>
+);
 }
 
 export default CustomerList;

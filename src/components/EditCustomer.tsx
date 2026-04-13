@@ -2,6 +2,8 @@ import { useState } from "react"
 import type { NewCustomer } from "../types"
 import { Button, Dialog, DialogTitle, DialogActions} from "@mui/material";
 import CustomerForm from "./CustomerForm";
+import Grid from '@mui/material/Grid';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 type EditCustomerProps = {
@@ -45,10 +47,8 @@ export default function EditCustomer(props: EditCustomerProps) {
     };
 
     return (
-        <>
-            <Button size="small" onClick={handleClickOpen}>
-                Edit
-            </Button>
+        <>  
+            <Grid onClick={handleClickOpen}><EditIcon /></Grid>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Update Car</DialogTitle>
                 <CustomerForm customer={customer} setCustomer={setCustomer} />
