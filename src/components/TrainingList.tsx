@@ -18,11 +18,11 @@ function TrainingList() {
         },
         { field: "duration", headerName: "Duration", width: 150 },
         { field: "activity", headerName: "Activity", width: 150 },
-        {   
-            field: "customer", 
-            headerName: "Customer", 
+        {
+            field: "customer",
+            headerName: "Customer",
             width: 300,
-            valueGetter : (_, row) => {
+            valueGetter: (_, row) => {
                 if (row.customer) {
                     return row.customer.firstname + " " + row.customer.lastname;
                 }
@@ -57,17 +57,17 @@ function TrainingList() {
     }
 
     const handleDelete = (id: number | string) => {
-        if(window.confirm("Are you sure?")){
+        if (window.confirm("Are you sure?")) {
             fetch(import.meta.env.VITE_API_URL + "/trainings/" + id, {
                 method: "DELETE"
             })
-            .then(response => {
-                if(!response.ok)
-                    throw new Error("Error when deleting a training");
-                return response.json()
-            })
-            .then(() => getTrainings())
-            .catch(err => console.error(err));
+                .then(response => {
+                    if (!response.ok)
+                        throw new Error("Error when deleting a training");
+                    return response.json()
+                })
+                .then(() => getTrainings())
+                .catch(err => console.error(err));
         }
     }
 
@@ -84,6 +84,7 @@ function TrainingList() {
                     getRowId={row => row.id}
                     autoPageSize
                     rowSelection={false}
+                    slotProps={{ toolbar: { csvOptions: { fields: ['date', 'duration', 'activity', 'customer' ] } } }}
                     showToolbar
                 />
             </div>
@@ -92,3 +93,5 @@ function TrainingList() {
 }
 
 export default TrainingList;
+
+

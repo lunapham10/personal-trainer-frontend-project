@@ -149,6 +149,7 @@ return (
                 getRowId={row => row._links.self.href}
                 autoPageSize
                 rowSelection={false}
+                slotProps={{ toolbar: { csvOptions: { fields: ['firstname', 'lastname', 'streetaddress', 'postcode', 'city', 'email', 'phone'] } } }}
                 showToolbar
             />
         </div>
