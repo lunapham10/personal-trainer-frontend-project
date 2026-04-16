@@ -23,9 +23,10 @@ export type NewCustomer = Omit<Customer, "_links">
 
 export type Training = {
     date: string;
-    duration: string;
+    duration: string | number;
     activity: string;
-    _links: {
+    customer?: Customer;
+    _links?: {
         trainings: {
             href: string;
         },

@@ -36,6 +36,8 @@ export default function AddTraining(props: AddTrainingProps){
         handleClose();
     };
 
+    const isSaveDisabled = !training.duration || !training.activity || !training.date
+
     return(
         <>
         <Button onClick={handleClickOpen}>Add Training</Button>
@@ -44,7 +46,7 @@ export default function AddTraining(props: AddTrainingProps){
             <TrainingForm training={training} setTraining={setTraining}/>
             <DialogActions>
                 <Button onClick = {handleClose}>Cancel</Button>
-                <Button onClick={handleSubmit}>Save</Button>
+                <Button onClick={handleSubmit} disabled={isSaveDisabled}>Save</Button>
             </DialogActions>
         </Dialog>
         </>

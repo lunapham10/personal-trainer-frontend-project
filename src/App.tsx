@@ -8,6 +8,7 @@ import { Divider, List, ListItem, ListItemButton, ListItemText, Drawer } from '@
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import TrainingList from './components/TrainingList';
+import Calendar from './components/Calendar';
 
 const drawerWidth = 240;
 const navItems = [
@@ -87,7 +88,7 @@ function App() {
         <Routes>
           <Route path="/" element={<CustomerList />} />
           <Route path="/trainings" element={<TrainingList />} />
-          <Route path="/calendar" element={<h3>Calendar</h3>} />
+          <Route path="/calendar" element={<Calendar />} />
         </Routes>
       </Box>
       <CssBaseline />
