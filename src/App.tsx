@@ -9,12 +9,14 @@ import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import TrainingList from './components/TrainingList';
 import Calendar from './components/Calendar';
+import Statistic from './components/Statistic';
 
 const drawerWidth = 240;
 const navItems = [
   { title: 'Customers', path: '/' },
   { title: 'Trainings', path: '/trainings' },
-  { title: 'Calendar', path: '/calendar' }
+  { title: 'Calendar', path: '/calendar' },
+  { title: 'Statistic', path: '/statistic' }
 ];
 
 function App() {
@@ -89,6 +91,7 @@ function App() {
           <Route path="/" element={<CustomerList />} />
           <Route path="/trainings" element={<TrainingList />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/statistic" element={<Statistic />} />
         </Routes>
       </Box>
       <CssBaseline />

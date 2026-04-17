@@ -13,9 +13,9 @@ type CalendarEvent = {
 }
 
 export default function Calendar() {
-    const [events, setEvents] = useState<CalendarEvent[]>([])
-    const [currentView, setCurrentView] = useState<View>('week')
-    const [currentDate, setCurrentDate] = useState(new Date())
+    const [events, setEvents] = useState<CalendarEvent[]>([]);
+    const [currentView, setCurrentView] = useState<View>('week');
+    const [currentDate, setCurrentDate] = useState(new Date());
 
     const getEvents = () => {
         fetch(import.meta.env.VITE_API_URL + "/gettrainings")
