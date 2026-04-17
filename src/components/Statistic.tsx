@@ -2,7 +2,6 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { useState, useEffect } from "react";
 import type { Training } from '../types';
 import _ from "lodash";
-import type { HotPayload } from 'vite/types/hmrPayload.js';
 import { Box, Stack } from '@mui/system';
 
 type ChartData = {
