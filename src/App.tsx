@@ -4,19 +4,23 @@ import * as React from 'react';
 import { AppBar, Typography, Container, CssBaseline, Toolbar, Box, IconButton } from '@mui/material'
 import CustomerList from './components/CustomerList';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, List, ListItem, ListItemButton, ListItemText, Drawer } from '@mui/material';
+import { Divider, List, ListItem, ListItemButton, ListItemText, Drawer, ListItemIcon } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import TrainingList from './components/TrainingList';
 import Calendar from './components/Calendar';
 import Statistic from './components/Statistic';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import EventIcon from '@mui/icons-material/Event';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const drawerWidth = 240;
 const navItems = [
-  { title: 'Customers', path: '/' },
-  { title: 'Trainings', path: '/trainings' },
-  { title: 'Calendar', path: '/calendar' },
-  { title: 'Statistic', path: '/statistic' }
+  { icon: <AccountBoxIcon />, title: 'Customers', path: '/' },
+  { icon: <DirectionsRunIcon />, title: 'Trainings', path: '/trainings' },
+  { icon: <EventIcon />, title: 'Calendar', path: '/calendar' },
+  { icon: <BarChartIcon />, title: 'Statistic', path: '/statistic' }
 ];
 
 function App() {
@@ -42,7 +46,10 @@ function App() {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.title} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }} onClick={() => handleNavigation(item.path)}>
+            <ListItemButton onClick={() => handleNavigation(item.path)}>
+              <ListItemIcon sx={{ minWidth: 40, justifyContent: 'center' }}>
+                {item.icon}
+              </ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>
           </ListItem>
