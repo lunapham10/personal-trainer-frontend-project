@@ -46,7 +46,7 @@ export default function AddCustomer(props: AddCustomerProps) {
             Add Customer
         </Button>
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>New Car</DialogTitle>
+            <DialogTitle>New Customer</DialogTitle>
             <DialogContent>
                 <TextField
                     required

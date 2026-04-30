@@ -50,7 +50,7 @@ export default function EditCustomer(props: EditCustomerProps) {
         <>  
             <Grid onClick={handleClickOpen}><EditIcon /></Grid>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Update Car</DialogTitle>
+                <DialogTitle>Update Customer</DialogTitle>
                 <CustomerForm customer={customer} setCustomer={setCustomer} />
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
