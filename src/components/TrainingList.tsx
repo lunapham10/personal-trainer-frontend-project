@@ -3,6 +3,7 @@ import { DataGrid, type GridColDef, type GridRenderCellParams } from "@mui/x-dat
 import type { Training } from "../types";
 import dayjs from "dayjs";
 import { Button } from "@mui/material";
+import { fetchTraining, deleteTraining} from "./api";
 
 function TrainingList() {
     const [trainings, setTrainings] = useState<Training[]>([]);
@@ -46,26 +47,14 @@ function TrainingList() {
     ]
 
     const getTrainings = () => {
-        fetch(import.meta.env.VITE_API_URL + "/gettrainings")
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when fetching trainings");
-                return response.json();
-            })
+        fetchTraining()
             .then(data => setTrainings(data))
             .catch(err => console.error(err))
     }
 
     const handleDelete = (id: number | string) => {
         if (window.confirm("Are you sure?")) {
-            fetch(import.meta.env.VITE_API_URL + "/trainings/" + id, {
-                method: "DELETE"
-            })
-                .then(response => {
-                    if (!response.ok)
-                        throw new Error("Error when deleting a training");
-                    return response.json()
-                })
+            deleteTraining(id)
                 .then(() => getTrainings())
                 .catch(err => console.error(err));
         }

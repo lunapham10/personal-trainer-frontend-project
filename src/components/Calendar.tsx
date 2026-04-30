@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useState, useEffect } from "react";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import type { Training } from "../types"
+import { fetchTraining } from './api';
 
 const localizer = dayjsLocalizer(dayjs)
 
@@ -18,12 +19,7 @@ export default function Calendar() {
     const [currentDate, setCurrentDate] = useState(new Date());
 
     const getEvents = () => {
-        fetch(import.meta.env.VITE_API_URL + "/gettrainings")
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when fetching trainings")
-                return response.json();
-            })
+        fetchTraining()
             .then(data => {const formattedEvents: CalendarEvent[] = data.map((training: Training) => {
                     return {
                         start: dayjs(training.date).toDate(), 

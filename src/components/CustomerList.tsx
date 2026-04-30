@@ -8,6 +8,7 @@ import EditCustomer from "./EditCustomer";
 import AddTraining from "./AddTraining";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Grid from '@mui/material/Grid';
+import { addCustomer, addTraining, deleteCustomer, fetchCustomer, updateCustomer } from "./api";
 
 function CustomerList() {
     const [customers, setCustomers] = useState<Customer[]>([]);
@@ -54,12 +55,7 @@ function CustomerList() {
     ]
 
     const getCustomers = () => {
-        fetch(import.meta.env.VITE_API_URL + "/customers")
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when fetching customers")
-                return response.json()
-            })
+        fetchCustomer()
             .then(data => setCustomers(data._embedded.customers))
             .catch(err => console.error(err))
 
@@ -67,94 +63,53 @@ function CustomerList() {
 
     const handleDelete = (url: string) => {
         if (window.confirm("Are you sure?")) {
-            fetch(url, {
-                method: "DELETE"
-            })
-                .then(response => {
-                    if (!response.ok)
-                        throw new Error("Error when deleting a customer");
-
-                    return response.json();
-                })
+            deleteCustomer(url)
                 .then(() => getCustomers())
                 .catch(err => console.error(err));
         }
     }
 
     const handleAdd = (customer: NewCustomer) => {
-        fetch(import.meta.env.VITE_API_URL + "/customers", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(customer)
-        })
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when adding a customer");
-                return response.json();
-            })
+        addCustomer(customer)
             .then(() => getCustomers())
             .catch(err => console.error(err));
     }
 
-    const handleUpdate = (url: string, updateCustomer: NewCustomer) => {
-        fetch(url, {
-            method: "PUT",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(updateCustomer)
-        })
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when updating a customer")
-                return response.json();
-            })
+    const handleUpdate = (url: string, customerData: NewCustomer) => {
+        updateCustomer(url, customerData)
             .then(() => getCustomers())
             .catch(err => console.error(err))
     }
 
     const handleAddTraining = (training: NewTraining) => {
-        fetch(import.meta.env.VITE_API_URL + "/trainings", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(training)
-        })
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when adding training");
-                alert("Training added successfully!");
-            })
+        addTraining(training)
             .catch(err => console.error(err));
     }
 
 
-useEffect(() => {
-    getCustomers();
-}, []);
+    useEffect(() => {
+        getCustomers();
+    }, []);
 
 
-return (
-    <>
-        <Stack direction="row" sx={{ mt: 2, mb: 2 }}>
-            <AddCustomer handleAdd={handleAdd} />
-        </Stack>
-        <div style={{ width: "100%", height: 500 }}>
-            <DataGrid
-                rows={customers}
-                columns={columns}
-                getRowId={row => row._links.self.href}
-                autoPageSize
-                rowSelection={false}
-                slotProps={{ toolbar: { csvOptions: { fields: ['firstname', 'lastname', 'streetaddress', 'postcode', 'city', 'email', 'phone'] } } }}
-                showToolbar
-            />
-        </div>
-    </>
-);
+    return (
+        <>
+            <Stack direction="row" sx={{ mt: 2, mb: 2 }}>
+                <AddCustomer handleAdd={handleAdd} />
+            </Stack>
+            <div style={{ width: "100%", height: 500 }}>
+                <DataGrid
+                    rows={customers}
+                    columns={columns}
+                    getRowId={row => row._links.self.href}
+                    autoPageSize
+                    rowSelection={false}
+                    slotProps={{ toolbar: { csvOptions: { fields: ['firstname', 'lastname', 'streetaddress', 'postcode', 'city', 'email', 'phone'] } } }}
+                    showToolbar
+                />
+            </div>
+        </>
+    );
 }
 
 export default CustomerList;

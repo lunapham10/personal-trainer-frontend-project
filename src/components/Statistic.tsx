@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import type { Training } from '../types';
 import _ from "lodash";
 import { Box, Stack } from '@mui/system';
+import { fetchTraining } from './api';
 
 type ChartData = {
     chartActivity: string;
@@ -18,12 +19,7 @@ export default function Statistic() {
     const [chartData, setChartData] = useState<ChartData[]>([]);
     const [horizontalChartData, setHorizontalChartData] = useState<ChartData2[]>([]);
     const fetchData = () => {
-        fetch(import.meta.env.VITE_API_URL + "/gettrainings")
-            .then(response => {
-                if (!response.ok)
-                    throw new Error("Error when fetching training data")
-                return response.json();
-            })
+        fetchTraining()
             .then((data: Training[]) => {
                 //Activity Statistics chart
                 const groupedData = _.groupBy(data, 'activity');
